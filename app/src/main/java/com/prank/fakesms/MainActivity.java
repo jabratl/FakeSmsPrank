@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
             String code = Sms.extractOtp(currentMessage);
             previewOtp.setText(code == null ? "No OTP detected" : "Detected code: " + code);
             previewOtp.setTag(code);
+            findViewById(R.id.copyOtp).setEnabled(code != null);
         };
         sender.addTextChangedListener(new android.text.TextWatcher() {
             public void beforeTextChanged(CharSequence s, int st, int c, int a) {}

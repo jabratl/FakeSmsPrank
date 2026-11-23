@@ -1,3 +1,10 @@
+FakeSmsPrank v1.2.3
+- Refreshed compact card-based layout for easier composing and scheduling.
+- Added clearer local-simulation labels to the message preview.
+- Improved conversation-style preview bubble and sender avatar.
+- OTP copy action is disabled when no code is detected.
+- Kept existing scheduling, draft/failed modes, inbox insertion, notifications, and updater.
+
 1.2.1
 - Improved SMS-style notifications: sender title, message preview, timestamp, expanded MessagingStyle.
 - Separate notification channel for the updated style and vibration settings.

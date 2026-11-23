@@ -1,41 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:padding="18dp">
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="Create simulated SMS" android:textSize="22sp" android:textStyle="bold" android:paddingBottom="8dp" />
-    <EditText android:id="@+id/sender" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Sender (number or name, e.g. 01712345678)" android:singleLine="true" />
-    <EditText android:id="@+id/msg" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Message" android:minLines="3" android:gravity="top" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MESSAGE PREVIEW · SIMULATED"
-        android:textStyle="bold" android:textSize="12sp" android:paddingTop="12dp" android:paddingBottom="6dp" />
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
-        android:background="#E8F3ED" android:padding="14dp">
-        <TextView android:id="@+id/previewSender" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Sender name / number" android:textColor="#145C43" android:textStyle="bold" android:textSize="16sp" />
-        <TextView android:id="@+id/previewMessage" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Your message preview will appear here." android:textColor="#202820" android:paddingTop="8dp" />
-        <TextView android:id="@+id/previewOtp" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="No OTP detected" android:textColor="#145C43" android:textStyle="bold" android:paddingTop="8dp" />
-        <Button android:id="@+id/copyOtp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Copy detected OTP" />
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#F4F6F8">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="18dp">
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Fake SMS Prank" android:textSize="26sp" android:textStyle="bold"
+            android:textColor="#18232D" android:paddingBottom="3dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Create an on-device message simulation" android:textSize="14sp"
+            android:textColor="#65727D" android:paddingBottom="14dp" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/card_bg" android:padding="16dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="MESSAGE DETAILS" android:textColor="#52616D" android:textSize="12sp"
+                android:textStyle="bold" android:paddingBottom="8dp" />
+            <EditText android:id="@+id/sender" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="Sender (name or number)" android:singleLine="true"
+                android:inputType="text" android:padding="12dp" />
+            <EditText android:id="@+id/msg" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="Write the simulated message" android:minLines="3" android:gravity="top"
+                android:inputType="textMultiLine|textCapSentences" android:padding="12dp" />
+        </LinearLayout>
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="PREVIEW · SIMULATION" android:textColor="#52616D" android:textSize="12sp"
+            android:textStyle="bold" android:paddingTop="18dp" android:paddingBottom="8dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/card_bg" android:padding="14dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <TextView android:layout_width="36dp" android:layout_height="36dp" android:gravity="center"
+                    android:text="S" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="16sp"
+                    android:background="@drawable/avatar_bg" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:orientation="vertical" android:paddingStart="10dp">
+                    <TextView android:id="@+id/previewSender" android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Sender name / number" android:textColor="#18232D" android:textStyle="bold" android:textSize="16sp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Simulated message · not sent" android:textColor="#73808A" android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView android:id="@+id/previewMessage" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Your message preview will appear here." android:textColor="#1D2B36"
+                android:background="@drawable/message_bubble" android:padding="14dp" android:layout_marginTop="12dp" />
+            <TextView android:id="@+id/previewOtp" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="No OTP detected" android:textColor="#23634B" android:textStyle="bold"
+                android:paddingTop="10dp" />
+            <Button android:id="@+id/copyOtp" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Copy detected code" android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/card_bg" android:padding="16dp"
+            android:layout_marginTop="16dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="DELIVERY OPTIONS" android:textColor="#52616D" android:textSize="12sp"
+                android:textStyle="bold" android:paddingBottom="8dp" />
+            <EditText android:id="@+id/delay" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="Delay in seconds (default 5)" android:inputType="numberDecimal" android:padding="12dp" />
+            <Button android:id="@+id/pick" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Choose date and time (optional)" />
+            <TextView android:id="@+id/picked" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:textColor="#23634B" android:padding="6dp" />
+            <Spinner android:id="@+id/type" android:layout_width="match_parent" android:layout_height="wrap_content" />
+            <CheckBox android:id="@+id/ins" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:checked="true" android:text="Insert into local SMS inbox (when permitted)" />
+            <Button android:id="@+id/go" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Schedule simulation" android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/card_bg" android:padding="16dp"
+            android:layout_marginTop="16dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="SMS APP STATUS" android:textColor="#52616D" android:textSize="12sp" android:textStyle="bold" />
+            <TextView android:id="@+id/dstat" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:textColor="#53616D" android:padding="8dp" />
+            <Button android:id="@+id/dset" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Set as default SMS app" />
+            <Button android:id="@+id/dback" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Default apps settings" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/ver" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center" android:textColor="#7A8791" android:paddingTop="20dp" android:paddingBottom="4dp" />
+        <Button android:id="@+id/upd" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Check for updates" />
     </LinearLayout>
-    <EditText android:id="@+id/delay" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Delay in seconds (e.g. 30)" android:inputType="numberDecimal" />
-    <Button android:id="@+id/pick" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="Choose date and time (optional)" />
-    <TextView android:id="@+id/picked" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Spinner android:id="@+id/type" android:layout_width="match_parent" android:layout_height="wrap_content" />
-    <CheckBox android:id="@+id/ins" android:layout_width="match_parent" android:layout_height="wrap_content" android:checked="true"
-        android:text="Also insert into local inbox (requires default SMS app)" />
-    <Button android:id="@+id/go" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Schedule simulated message" />
-    <View android:layout_width="match_parent" android:layout_height="18dp" />
-    <TextView android:id="@+id/dstat" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Button android:id="@+id/dset" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Set as default SMS app" />
-    <Button android:id="@+id/dback" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Change default SMS app in Settings" />
-    <View android:layout_width="match_parent" android:layout_height="18dp" />
-    <TextView android:id="@+id/ver" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Button android:id="@+id/upd" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Check for updates" />
-</LinearLayout>
 </ScrollView>
