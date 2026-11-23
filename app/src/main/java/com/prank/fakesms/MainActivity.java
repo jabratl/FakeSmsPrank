@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 
 public class MainActivity extends Activity {
     private long pickedAt = 0;   // chosen delivery time (0 = use the seconds field)
@@ -39,6 +41,37 @@ public class MainActivity extends Activity {
         EditText sender = findViewById(R.id.sender);
         EditText msg = findViewById(R.id.msg);
         EditText delay = findViewById(R.id.delay);
+        TextView previewSender = findViewById(R.id.previewSender);
+        TextView previewMessage = findViewById(R.id.previewMessage);
+        TextView previewOtp = findViewById(R.id.previewOtp);
+        Runnable refreshPreview = () -> {
+            String currentSender = sender.getText().toString().trim();
+            String currentMessage = msg.getText().toString().trim();
+            previewSender.setText(currentSender.isEmpty() ? "Sender name / number" : currentSender);
+            previewMessage.setText(currentMessage.isEmpty() ? "Your message preview will appear here." : currentMessage);
+            String code = Sms.extractOtp(currentMessage);
+            previewOtp.setText(code == null ? "No OTP detected" : "Detected code: " + code);
+            previewOtp.setTag(code);
+        };
+        sender.addTextChangedListener(new android.text.TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            public void onTextChanged(CharSequence s, int st, int before, int count) { refreshPreview.run(); }
+            public void afterTextChanged(android.text.Editable e) {}
+        });
+        msg.addTextChangedListener(new android.text.TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            public void onTextChanged(CharSequence s, int st, int before, int count) { refreshPreview.run(); }
+            public void afterTextChanged(android.text.Editable e) {}
+        });
+        refreshPreview.run();
+        findViewById(R.id.copyOtp).setOnClickListener(v -> {
+            Object tag = previewOtp.getTag();
+            if (tag instanceof String && !((String) tag).isEmpty()) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText("OTP code", (String) tag));
+                Toast.makeText(this, "OTP copied", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(this, "No 4–8 digit OTP detected", Toast.LENGTH_SHORT).show();
+        });
 
         Spinner typeSp = findViewById(R.id.type);
         typeSp.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
