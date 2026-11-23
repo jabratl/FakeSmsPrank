@@ -54,23 +54,39 @@ public final class Sms {
     /** SMS-style notification (sender name, text, time; tap opens the Messages app). */
     public static void notifyMsg(Context ctx, String sender, String msg, int id) {
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        // Versioned channel: lets the improved SMS-like notification settings take effect.
+        final String channelId = "sms_simulated_v2";
         if (Build.VERSION.SDK_INT >= 26) {
-            nm.createNotificationChannel(new NotificationChannel("sms", "Messages", NotificationManager.IMPORTANCE_HIGH));
+            NotificationChannel channel = new NotificationChannel(
+                    channelId, "Simulated SMS notifications", NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("On-device simulated messages from Fake SMS Prank");
+            channel.enableVibration(true);
+            channel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PRIVATE);
+            nm.createNotificationChannel(channel);
         }
-        Person p = new Person.Builder().setName(sender).build();
-        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle(p)
-                .addMessage(msg, System.currentTimeMillis(), p);
+
+        long receivedAt = System.currentTimeMillis();
+        Person senderPerson = new Person.Builder().setName(sender).build();
+        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle(senderPerson)
+                .addMessage(msg, receivedAt, senderPerson);
 
         Intent open = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_MESSAGING);
         open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pi = PendingIntent.getActivity(ctx, id, open, PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder nb = new NotificationCompat.Builder(ctx, "sms")
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(ctx, channelId)
                 .setSmallIcon(R.drawable.ic_stat_sms)
                 .setColor(0xFF0E9F6E)
+                .setContentTitle(sender)
+                .setContentText(msg)
+                .setSubText("Simulated • Fake SMS Prank")
                 .setStyle(style)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setWhen(receivedAt)
+                .setShowWhen(true)
+                .setTicker(sender + ": " + msg)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true)
                 .setContentIntent(pi);

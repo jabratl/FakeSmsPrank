@@ -1,3 +1,8 @@
+1.2.1
+- Improved SMS-style notifications: sender title, message preview, timestamp, expanded MessagingStyle.
+- Separate notification channel for the updated style and vibration settings.
+- Notifications clearly identify themselves as simulated and local to this app.
+
 1.2.0
 - Pick a date and time (future only) for the message to arrive.
 - Message type: Inbox, Draft or Failed (Draft and Failed need the default SMS app).
