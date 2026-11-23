@@ -20,21 +20,35 @@ public final class Sms {
         catch (Throwable t) { return false; }
     }
 
-    /** Writes an unread message into the phone's SMS inbox. Works only while this app is the default SMS app. */
-    public static boolean insertInbox(Context c, String address, String body, long date) {
+    private static boolean insert(Context c, android.net.Uri uri, String address, String body, long date, int type, int read) {
         try {
             ContentValues v = new ContentValues();
             v.put(Telephony.Sms.ADDRESS, address);
             v.put(Telephony.Sms.BODY, body);
             v.put(Telephony.Sms.DATE, date);
             v.put(Telephony.Sms.DATE_SENT, date);
-            v.put(Telephony.Sms.READ, 0);
-            v.put(Telephony.Sms.SEEN, 0);
-            v.put(Telephony.Sms.TYPE, Telephony.Sms.MESSAGE_TYPE_INBOX);
-            return c.getContentResolver().insert(Telephony.Sms.Inbox.CONTENT_URI, v) != null;
+            v.put(Telephony.Sms.READ, read);
+            v.put(Telephony.Sms.SEEN, read);
+            v.put(Telephony.Sms.TYPE, type);
+            return c.getContentResolver().insert(uri, v) != null;
         } catch (Throwable t) {
             return false;
         }
+    }
+
+    /** Unread received message in the inbox. Works only while this app is the default SMS app. */
+    public static boolean insertInbox(Context c, String address, String body, long date) {
+        return insert(c, Telephony.Sms.Inbox.CONTENT_URI, address, body, date, Telephony.Sms.MESSAGE_TYPE_INBOX, 0);
+    }
+
+    /** A draft (saved, not sent). The time is always "now". */
+    public static boolean insertDraft(Context c, String address, String body) {
+        return insert(c, Telephony.Sms.Draft.CONTENT_URI, address, body, System.currentTimeMillis(), Telephony.Sms.MESSAGE_TYPE_DRAFT, 1);
+    }
+
+    /** A message that "failed to send". The time is always "now". */
+    public static boolean insertFailed(Context c, String address, String body) {
+        return insert(c, Telephony.Sms.CONTENT_URI, address, body, System.currentTimeMillis(), Telephony.Sms.MESSAGE_TYPE_FAILED, 1);
     }
 
     /** SMS-style notification (sender name, text, time; tap opens the Messages app). */

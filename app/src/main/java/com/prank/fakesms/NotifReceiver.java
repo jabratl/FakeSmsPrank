@@ -11,8 +11,16 @@ public class NotifReceiver extends BroadcastReceiver {
         String msg = intent.getStringExtra("msg");
         int id = intent.getIntExtra("id", 1);
         boolean insert = intent.getBooleanExtra("insert", false);
+        int type = intent.getIntExtra("type", 0);   // 0 = Inbox, 1 = Draft, 2 = Failed
 
-        // Inbox e dhukano (shudhu jodi ei app default SMS app hoy)
+        if (type == 1) {            // Draft: only saved, no notification
+            if (Sms.isDefault(ctx)) Sms.insertDraft(ctx, sender, msg);
+            return;
+        }
+        if (type == 2) {            // Failed to send: only saved, no notification
+            if (Sms.isDefault(ctx)) Sms.insertFailed(ctx, sender, msg);
+            return;
+        }
         if (insert && Sms.isDefault(ctx)) {
             Sms.insertInbox(ctx, sender, msg, System.currentTimeMillis());
         }

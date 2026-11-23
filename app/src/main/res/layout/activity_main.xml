@@ -19,6 +19,15 @@
         android:layout_height="wrap_content" android:hint="Koto second pore (e.g. 30)"
         android:inputType="numberDecimal" />
 
+    <Button android:id="@+id/pick" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Tarikh ar somoy bachho (optional, shudhu bhobishyot)" />
+
+    <TextView android:id="@+id/picked" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" />
+
+    <Spinner android:id="@+id/type" android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <CheckBox android:id="@+id/ins" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:checked="true"
         android:text="Messages app er inbox e-o dhukao (default SMS app lagbe)" />

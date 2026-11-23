@@ -1,6 +1,13 @@
 package com.prank.fakesms;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import android.app.role.RoleManager;
 import android.provider.Telephony;
 import android.widget.CheckBox;
@@ -19,6 +26,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+    private long pickedAt = 0;   // chosen delivery time (0 = use the seconds field)
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
@@ -31,6 +39,29 @@ public class MainActivity extends Activity {
         EditText sender = findViewById(R.id.sender);
         EditText msg = findViewById(R.id.msg);
         EditText delay = findViewById(R.id.delay);
+
+        Spinner typeSp = findViewById(R.id.type);
+        typeSp.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                new String[]{"Inbox (received SMS + notification)", "Draft (saved, not sent)", "Failed (could not send)"}));
+        TextView pickedTv = findViewById(R.id.picked);
+        findViewById(R.id.pick).setOnClickListener(v -> {
+            Calendar now = Calendar.getInstance();
+            DatePickerDialog dp = new DatePickerDialog(this, (view, y, m, d) -> {
+                new TimePickerDialog(this, (tv, h, min) -> {
+                    Calendar c = Calendar.getInstance();
+                    c.set(y, m, d, h, min, 0);
+                    c.set(Calendar.MILLISECOND, 0);
+                    if (c.getTimeInMillis() <= System.currentTimeMillis()) {
+                        Toast.makeText(this, "Somoy ta bhobishyote hote hobe", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    pickedAt = c.getTimeInMillis();
+                    pickedTv.setText("Pathabe: " + DateFormat.getDateTimeInstance().format(new Date(pickedAt)));
+                }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false).show();
+            }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+            dp.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            dp.show();
+        });
 
         findViewById(R.id.dset).setOnClickListener(v -> requestDefaultSms());
         findViewById(R.id.dback).setOnClickListener(v -> {
@@ -53,17 +84,31 @@ public class MainActivity extends Activity {
                 return;
             }
 
+            int type = typeSp.getSelectedItemPosition();
+            if (type != 0 && !Sms.isDefault(this)) {
+                Toast.makeText(this, "Draft / Failed er jonno age default SMS app set koro", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (pickedAt > 0 && pickedAt <= System.currentTimeMillis()) {
+                Toast.makeText(this, "Bachha somoy ta chole gechhe, abar bachho", Toast.LENGTH_LONG).show();
+                pickedAt = 0;
+                pickedTv.setText("");
+                return;
+            }
             int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
             Intent i = new Intent(this, NotifReceiver.class);
             i.putExtra("sender", s);
             i.putExtra("msg", m);
             i.putExtra("id", id);
+            i.putExtra("type", type);
             i.putExtra("insert", ((CheckBox) findViewById(R.id.ins)).isChecked());
             PendingIntent pi = PendingIntent.getBroadcast(this, id, i,
                     PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            long at = System.currentTimeMillis() + (long) (sec * 1000);
+            long at = pickedAt > 0 ? pickedAt : System.currentTimeMillis() + (long) (sec * 1000);
+            pickedAt = 0;
+            pickedTv.setText("");
 
             if (Build.VERSION.SDK_INT >= 31 && !am.canScheduleExactAlarms()) {
                 am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi);

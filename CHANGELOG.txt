@@ -1,3 +1,7 @@
+1.2.0
+- Pick a date and time (future only) for the message to arrive.
+- Message type: Inbox, Draft or Failed (Draft and Failed need the default SMS app).
+
 1.1.1
 - New app icon (green chat bubble with unread badge) and a matching notification icon.
 
