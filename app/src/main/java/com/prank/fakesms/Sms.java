@@ -6,11 +6,15 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.os.Build;
 import android.provider.Telephony;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.Person;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Sms {
     private Sms() {}
@@ -49,6 +53,13 @@ public final class Sms {
     /** A message that "failed to send". The time is always "now". */
     public static boolean insertFailed(Context c, String address, String body) {
         return insert(c, Telephony.Sms.CONTENT_URI, address, body, System.currentTimeMillis(), Telephony.Sms.MESSAGE_TYPE_FAILED, 1);
+    }
+
+    /** Finds a standalone 4-8 digit verification code in a message. */
+    public static String extractOtp(String msg) {
+        if (msg == null) return null;
+        Matcher m = Pattern.compile("(?<!\\d)(\\d{4,8})(?!\\d)").matcher(msg);
+        return m.find() ? m.group(1) : null;
     }
 
     /** SMS-style notification (sender name, text, time; tap opens the Messages app). */
@@ -90,6 +101,15 @@ public final class Sms {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true)
                 .setContentIntent(pi);
+        String otp = extractOtp(msg);
+        if (otp != null) {
+            Intent copy = new Intent(ctx, NotifReceiver.class);
+            copy.setAction(NotifReceiver.ACTION_COPY_OTP);
+            copy.putExtra("otp", otp);
+            PendingIntent copyPi = PendingIntent.getBroadcast(ctx, id + 100000,
+                    copy, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            nb.addAction(android.R.drawable.ic_menu_info_details, "Copy code", copyPi);
+        }
         nm.notify(id, nb.build());
     }
 }
