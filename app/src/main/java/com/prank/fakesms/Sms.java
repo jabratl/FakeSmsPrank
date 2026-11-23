@@ -52,7 +52,8 @@ public final class Sms {
         PendingIntent pi = PendingIntent.getActivity(ctx, id, open, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder nb = new NotificationCompat.Builder(ctx, "sms")
-                .setSmallIcon(android.R.drawable.stat_notify_chat)
+                .setSmallIcon(R.drawable.ic_stat_sms)
+                .setColor(0xFF0E9F6E)
                 .setStyle(style)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

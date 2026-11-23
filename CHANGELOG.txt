@@ -1,3 +1,6 @@
+1.1.1
+- New app icon (green chat bubble with unread badge) and a matching notification icon.
+
 1.1.0
 - Optional: set the app as default SMS app, so the scheduled message also appears in the Messages inbox (unread, with the real notification).
 - Real SMS that arrive while the app is the default are saved to the inbox too.
