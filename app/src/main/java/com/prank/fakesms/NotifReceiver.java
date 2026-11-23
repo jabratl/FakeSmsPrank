@@ -3,10 +3,23 @@ package com.prank.fakesms;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ClipboardManager;
+import android.content.ClipData;
+import android.widget.Toast;
 
 public class NotifReceiver extends BroadcastReceiver {
+    public static final String ACTION_COPY_OTP = "com.prank.fakesms.COPY_OTP";
     @Override
     public void onReceive(Context ctx, Intent intent) {
+        if (ACTION_COPY_OTP.equals(intent.getAction())) {
+            String otp = intent.getStringExtra("otp");
+            if (otp != null && !otp.isEmpty()) {
+                ClipboardManager cm = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText("OTP code", otp));
+                Toast.makeText(ctx, "Code copied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
         String sender = intent.getStringExtra("sender");
         String msg = intent.getStringExtra("msg");
         int id = intent.getIntExtra("id", 1);
