@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:padding="18dp">
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="Create simulated SMS" android:textSize="22sp" android:textStyle="bold" android:paddingBottom="8dp" />
-    <EditText android:id="@+id/sender" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Sender (number or name, e.g. 01712345678)" android:singleLine="true" />
-    <EditText android:id="@+id/msg" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Message" android:minLines="3" android:gravity="top" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MESSAGE PREVIEW · SIMULATED"
-        android:textStyle="bold" android:textSize="12sp" android:paddingTop="12dp" android:paddingBottom="6dp" />
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
-        android:background="#E8F3ED" android:padding="14dp">
-        <TextView android:id="@+id/previewSender" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Sender name / number" android:textColor="#145C43" android:textStyle="bold" android:textSize="16sp" />
-        <TextView android:id="@+id/previewMessage" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Your message preview will appear here." android:textColor="#202820" android:paddingTop="8dp" />
-        <TextView android:id="@+id/previewOtp" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="No OTP detected" android:textColor="#145C43" android:textStyle="bold" android:paddingTop="8dp" />
-        <Button android:id="@+id/copyOtp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Copy detected OTP" />
-    </LinearLayout>
-    <EditText android:id="@+id/delay" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Delay in seconds (e.g. 30)" android:inputType="numberDecimal" />
-    <Button android:id="@+id/pick" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="Choose date and time (optional)" />
-    <TextView android:id="@+id/picked" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Spinner android:id="@+id/type" android:layout_width="match_parent" android:layout_height="wrap_content" />
-    <CheckBox android:id="@+id/ins" android:layout_width="match_parent" android:layout_height="wrap_content" android:checked="true"
-        android:text="Also insert into local inbox (requires default SMS app)" />
-    <Button android:id="@+id/go" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Schedule simulated message" />
-    <View android:layout_width="match_parent" android:layout_height="18dp" />
-    <TextView android:id="@+id/dstat" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Button android:id="@+id/dset" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Set as default SMS app" />
-    <Button android:id="@+id/dback" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Change default SMS app in Settings" />
-    <View android:layout_width="match_parent" android:layout_height="18dp" />
-    <TextView android:id="@+id/ver" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" />
-    <Button android:id="@+id/upd" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Check for updates" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText android:id="@+id/sender" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="Sender (number ba naam, e.g. 01712345678 / bKash)" />
+
+    <EditText android:id="@+id/msg" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="Message"
+        android:minLines="3" android:gravity="top" />
+
+    <EditText android:id="@+id/delay" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="Koto second pore (e.g. 30)"
+        android:inputType="numberDecimal" />
+
+    <Button android:id="@+id/pick" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Tarikh ar somoy bachho (optional, shudhu bhobishyot)" />
+
+    <TextView android:id="@+id/picked" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" />
+
+    <Spinner android:id="@+id/type" android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <CheckBox android:id="@+id/ins" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="Messages app er inbox e-o dhukao (default SMS app lagbe)" />
+
+    <Button android:id="@+id/go" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Schedule" />
+
+    <View android:layout_width="match_parent" android:layout_height="20dp" />
+
+    <TextView android:id="@+id/dstat" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" />
+
+    <Button android:id="@+id/dset" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Set as default SMS app" />
+
+    <Button android:id="@+id/dback" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Default SMS app fire dao (Settings)" />
+
+    <View android:layout_width="match_parent" android:layout_height="20dp" />
+
+    <TextView android:id="@+id/ver" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" />
+
+    <Button android:id="@+id/upd" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Check for updates" />
 </LinearLayout>
 </ScrollView>

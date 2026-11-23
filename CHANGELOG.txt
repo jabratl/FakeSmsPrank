@@ -18,11 +18,3 @@
 1.0.0
 - First version: schedule a fake SMS-style notification on this phone only.
 - In-app update from GitHub Releases (Check for updates).
-
-
-Version 1.2.2
-- Added simulated message preview with live sender/message updates.
-- Detects standalone 4-8 digit codes in the preview and provides a Copy OTP button.
-- OTP notifications include a Copy code action when a code is detected.
-- Polished message composer and preview layout.
-- Existing scheduled delivery and SMS inbox insertion behavior retained.
