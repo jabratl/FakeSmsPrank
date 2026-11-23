@@ -1,3 +1,8 @@
+1.1.0
+- Optional: set the app as default SMS app, so the scheduled message also appears in the Messages inbox (unread, with the real notification).
+- Real SMS that arrive while the app is the default are saved to the inbox too.
+- New buttons: Set as default SMS app / give the default back.
+
 1.0.0
 - First version: schedule a fake SMS-style notification on this phone only.
 - In-app update from GitHub Releases (Check for updates).

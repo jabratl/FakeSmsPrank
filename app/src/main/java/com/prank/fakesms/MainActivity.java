@@ -1,6 +1,9 @@
 package com.prank.fakesms;
 
 import android.app.Activity;
+import android.app.role.RoleManager;
+import android.provider.Telephony;
+import android.widget.CheckBox;
 import android.app.AlertDialog;
 import android.widget.TextView;
 import java.io.File;
@@ -29,6 +32,12 @@ public class MainActivity extends Activity {
         EditText msg = findViewById(R.id.msg);
         EditText delay = findViewById(R.id.delay);
 
+        findViewById(R.id.dset).setOnClickListener(v -> requestDefaultSms());
+        findViewById(R.id.dback).setOnClickListener(v -> {
+            try { startActivity(new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)); }
+            catch (Exception e) { startActivity(new Intent(Settings.ACTION_SETTINGS)); }
+        });
+
         TextView ver = findViewById(R.id.ver);
         ver.setText("Version " + BuildConfig.VERSION_NAME + " (build " + BuildConfig.VERSION_CODE + ")");
         findViewById(R.id.upd).setOnClickListener(v -> checkUpdate());
@@ -49,6 +58,7 @@ public class MainActivity extends Activity {
             i.putExtra("sender", s);
             i.putExtra("msg", m);
             i.putExtra("id", id);
+            i.putExtra("insert", ((CheckBox) findViewById(R.id.ins)).isChecked());
             PendingIntent pi = PendingIntent.getBroadcast(this, id, i,
                     PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -117,5 +127,45 @@ public class MainActivity extends Activity {
                 });
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshDefaultStatus();
+    }
+
+    private void refreshDefaultStatus() {
+        TextView t = findViewById(R.id.dstat);
+        if (Sms.isDefault(this)) {
+            t.setText("Ei app ekhon DEFAULT SMS app. Real SMS-o ekhane ashbe, prank shesh hole default fire dao.");
+        } else {
+            t.setText("Default SMS app noy: shudhu notification dekhabe, inbox e dhukbe na.");
+        }
+    }
+
+    private void requestDefaultSms() {
+        try {
+            if (Build.VERSION.SDK_INT >= 29) {
+                RoleManager rm = getSystemService(RoleManager.class);
+                if (rm != null && rm.isRoleAvailable(RoleManager.ROLE_SMS) && !rm.isRoleHeld(RoleManager.ROLE_SMS)) {
+                    startActivityForResult(rm.createRequestRoleIntent(RoleManager.ROLE_SMS), 2);
+                } else {
+                    Toast.makeText(this, "Already default (ba ei phone e role available na)", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Intent i = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                i.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
+                startActivityForResult(i, 2);
+            }
+        } catch (Throwable t) {
+            Toast.makeText(this, "Default SMS app set kora gelo na: " + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
+        refreshDefaultStatus();
     }
 }

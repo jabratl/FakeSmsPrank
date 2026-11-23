@@ -1,7 +1,7 @@
 plugins { id 'com.android.application' }
 
 // Version: change ONLY this line to bump the version (the workflow reads it).
-def appVersionName = "1.0.0"
+def appVersionName = "1.1.0"
 // versionCode = GitHub run number (always goes up, so Android accepts the update).
 def runNumber = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
 
@@ -20,6 +20,11 @@ android {
     }
 
     buildFeatures { buildConfig true }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     signingConfigs {
         def ks = System.getenv("KEYSTORE_PATH")

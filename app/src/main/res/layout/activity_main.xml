@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="20dp">
 
     <EditText android:id="@+id/sender" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="Sender (e.g. Mom, bKash, 16216)" />
+        android:layout_height="wrap_content" android:hint="Sender (number ba naam, e.g. 01712345678 / bKash)" />
 
     <EditText android:id="@+id/msg" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:hint="Message"
@@ -16,10 +19,25 @@
         android:layout_height="wrap_content" android:hint="Koto second pore (e.g. 30)"
         android:inputType="numberDecimal" />
 
+    <CheckBox android:id="@+id/ins" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="Messages app er inbox e-o dhukao (default SMS app lagbe)" />
+
     <Button android:id="@+id/go" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="Schedule" />
 
-    <View android:layout_width="match_parent" android:layout_height="24dp" />
+    <View android:layout_width="match_parent" android:layout_height="20dp" />
+
+    <TextView android:id="@+id/dstat" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" />
+
+    <Button android:id="@+id/dset" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Set as default SMS app" />
+
+    <Button android:id="@+id/dback" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Default SMS app fire dao (Settings)" />
+
+    <View android:layout_width="match_parent" android:layout_height="20dp" />
 
     <TextView android:id="@+id/ver" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:gravity="center" />
@@ -27,3 +45,4 @@
     <Button android:id="@+id/upd" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="Check for updates" />
 </LinearLayout>
+</ScrollView>
